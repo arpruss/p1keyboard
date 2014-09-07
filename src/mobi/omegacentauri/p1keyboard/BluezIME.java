@@ -73,13 +73,13 @@ public class BluezIME extends InputMethodService {
 		setNotificationText(getString(R.string.ime_starting));
 		acquireWakeLock();
 
-        registerReceiver(connectReceiver, new IntentFilter(P1Service.EVENT_CONNECTED));
-        registerReceiver(connectingReceiver, new IntentFilter(P1Service.EVENT_CONNECTING));
-        registerReceiver(disconnectReceiver, new IntentFilter(P1Service.EVENT_DISCONNECTED));
-        registerReceiver(errorReceiver, new IntentFilter(P1Service.EVENT_ERROR));
+        registerReceiver(connectReceiver, new IntentFilter(BluezService.EVENT_CONNECTED));
+        registerReceiver(connectingReceiver, new IntentFilter(BluezService.EVENT_CONNECTING));
+        registerReceiver(disconnectReceiver, new IntentFilter(BluezService.EVENT_DISCONNECTED));
+        registerReceiver(errorReceiver, new IntentFilter(BluezService.EVENT_ERROR));
         registerReceiver(preferenceChangedHandler, new IntentFilter(Preferences.PREFERENCES_UPDATED));
-        registerReceiver(activityHandler, new IntentFilter(P1Service.EVENT_KEYPRESS));
-        registerReceiver(activityHandler, new IntentFilter(P1Service.EVENT_DIRECTIONALCHANGE));
+        registerReceiver(activityHandler, new IntentFilter(BluezService.EVENT_KEYPRESS));
+        registerReceiver(activityHandler, new IntentFilter(BluezService.EVENT_DIRECTIONALCHANGE));
     	registerReceiver(bluetoothStateMonitor, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 	}
 	
@@ -185,12 +185,12 @@ public class BluezIME extends InputMethodService {
 	    	String address = m_prefs.getSelectedDeviceAddress(i);
 	    	String driver = m_prefs.getSelectedDriverName(i);
 	
-	    	Intent intent = new Intent(this, P1Service.class);
-	    	intent.setAction(P1Service.REQUEST_CONNECT);
-	    	intent.putExtra(P1Service.REQUEST_CONNECT_ADDRESS, address);
-	    	intent.putExtra(P1Service.REQUEST_CONNECT_DRIVER, driver);
-	    	intent.putExtra(P1Service.SESSION_ID, SESSION_ID + i);
-	    	intent.putExtra(P1Service.REQUEST_CONNECT_CREATE_NOTIFICATION, false);
+	    	Intent intent = new Intent(this, BluezService.class);
+	    	intent.setAction(BluezService.REQUEST_CONNECT);
+	    	intent.putExtra(BluezService.REQUEST_CONNECT_ADDRESS, address);
+	    	intent.putExtra(BluezService.REQUEST_CONNECT_DRIVER, driver);
+	    	intent.putExtra(BluezService.SESSION_ID, SESSION_ID + i);
+	    	intent.putExtra(BluezService.REQUEST_CONNECT_CREATE_NOTIFICATION, false);
 			startService(intent);
     	}
 	}
@@ -215,9 +215,9 @@ public class BluezIME extends InputMethodService {
 
 			for(int i = 0; i < m_connectedIds.length; i++) {
 				if (m_connectedIds[i] != null) {
-					Intent intent = new Intent(this, P1Service.class);
-					intent.setAction(P1Service.REQUEST_DISCONNECT);
-					intent.putExtra(P1Service.SESSION_ID, m_connectedIds[i]);
+					Intent intent = new Intent(this, BluezService.class);
+					intent.setAction(BluezService.REQUEST_DISCONNECT);
+					intent.putExtra(BluezService.SESSION_ID, m_connectedIds[i]);
 					startService(intent);
 				}
 			}
@@ -256,11 +256,11 @@ public class BluezIME extends InputMethodService {
 	private BroadcastReceiver connectingReceiver =  new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			String sid = intent.getStringExtra(P1Service.SESSION_ID);
+			String sid = intent.getStringExtra(BluezService.SESSION_ID);
 			if (sid == null || !sid.startsWith(SESSION_ID))
 				return;
 			
-			String address = intent.getStringExtra(P1Service.EVENT_CONNECTING_ADDRESS);
+			String address = intent.getStringExtra(BluezService.EVENT_CONNECTING_ADDRESS);
 			Toast.makeText(BluezIME.this, String.format(getString(R.string.ime_connecting), address), Toast.LENGTH_SHORT).show();
 			setNotificationText(String.format(getString(R.string.ime_connecting), address));
 		}
@@ -269,7 +269,7 @@ public class BluezIME extends InputMethodService {
 	private BroadcastReceiver connectReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			String sid = intent.getStringExtra(P1Service.SESSION_ID);
+			String sid = intent.getStringExtra(BluezService.SESSION_ID);
 			if (sid == null || !sid.startsWith(SESSION_ID))
 				return;
 
@@ -281,21 +281,21 @@ public class BluezIME extends InputMethodService {
 				return;
 			
 			if (D) Log.d(LOG_NAME, "Connect received");
-			Toast.makeText(context, String.format(context.getString(R.string.connected_to_device_message), intent.getStringExtra(P1Service.EVENT_CONNECTED_ADDRESS)), Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, String.format(context.getString(R.string.connected_to_device_message), intent.getStringExtra(BluezService.EVENT_CONNECTED_ADDRESS)), Toast.LENGTH_SHORT).show();
 			m_connectedIds[controllerNo] = sid;
-			setNotificationText(String.format(getString(R.string.ime_connected), intent.getStringExtra(P1Service.EVENT_CONNECTED_ADDRESS)));
+			setNotificationText(String.format(getString(R.string.ime_connected), intent.getStringExtra(BluezService.EVENT_CONNECTED_ADDRESS)));
 		}
 	};
 	
 	private BroadcastReceiver disconnectReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			String sid = intent.getStringExtra(P1Service.SESSION_ID);
+			String sid = intent.getStringExtra(BluezService.SESSION_ID);
 			if (sid == null || !sid.startsWith(SESSION_ID))
 				return;
 
 			Log.d(LOG_NAME, "Disconnect received");
-			Toast.makeText(context, String.format(context.getString(R.string.disconnected_from_device_message), intent.getStringExtra(P1Service.EVENT_DISCONNECTED_ADDRESS)), Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, String.format(context.getString(R.string.disconnected_from_device_message), intent.getStringExtra(BluezService.EVENT_DISCONNECTED_ADDRESS)), Toast.LENGTH_SHORT).show();
 			for(int i = 0; i < m_connectedIds.length; i++) {
 				if (sid.equals(m_connectedIds[i]))
 					m_connectedIds[i] = null;
@@ -308,13 +308,13 @@ public class BluezIME extends InputMethodService {
 	private BroadcastReceiver errorReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			String sid = intent.getStringExtra(P1Service.SESSION_ID);
+			String sid = intent.getStringExtra(BluezService.SESSION_ID);
 			if (sid == null || !sid.startsWith(SESSION_ID))
 				return;
 
 			if (D) Log.d(LOG_NAME, "Error received");
-			Toast.makeText(context, String.format(context.getString(R.string.error_message_generic), intent.getStringExtra(P1Service.EVENT_ERROR_SHORT)), Toast.LENGTH_SHORT).show();
-			setNotificationText(String.format(getString(R.string.ime_error), intent.getStringExtra(P1Service.EVENT_ERROR_SHORT)));
+			Toast.makeText(context, String.format(context.getString(R.string.error_message_generic), intent.getStringExtra(BluezService.EVENT_ERROR_SHORT)), Toast.LENGTH_SHORT).show();
+			setNotificationText(String.format(getString(R.string.ime_error), intent.getStringExtra(BluezService.EVENT_ERROR_SHORT)));
 		}
 	};
 
@@ -343,7 +343,7 @@ public class BluezIME extends InputMethodService {
 	private BroadcastReceiver activityHandler = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			String sid = intent.getStringExtra(P1Service.SESSION_ID);
+			String sid = intent.getStringExtra(BluezService.SESSION_ID);
 			if (sid == null || !sid.startsWith(SESSION_ID))
 				return;
 			
@@ -356,10 +356,10 @@ public class BluezIME extends InputMethodService {
 				InputConnection ic = getCurrentInputConnection();
 				long eventTime = SystemClock.uptimeMillis();
 
-				if (intent.getAction().equals(P1Service.EVENT_KEYPRESS)) {
-					int action = intent.getIntExtra(P1Service.EVENT_KEYPRESS_ACTION, KeyEvent.ACTION_DOWN);
-					int key = intent.getIntExtra(P1Service.EVENT_KEYPRESS_KEY, 0);
-					int metakey = intent.getIntExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+				if (intent.getAction().equals(BluezService.EVENT_KEYPRESS)) {
+					int action = intent.getIntExtra(BluezService.EVENT_KEYPRESS_ACTION, KeyEvent.ACTION_DOWN);
+					int key = intent.getIntExtra(BluezService.EVENT_KEYPRESS_KEY, 0);
+					int metakey = intent.getIntExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
 
 					//This construct ensures that we can perform lock free
 					// access to m_keyMappingCache and never risk sending -1 

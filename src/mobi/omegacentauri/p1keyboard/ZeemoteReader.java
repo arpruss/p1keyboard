@@ -131,10 +131,10 @@ public class ZeemoteReader extends RfcommReader {
 				for(int i = 0; i < curStates.length; i++)
 					if (curStates[i] != _buttonStates[i] && i < KEYCODE_MAPPINGS.length && i >= 0)
 					{
-						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, _buttonStates[i] ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, KEYCODE_MAPPINGS[i]);
-						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
-						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, _buttonStates[i] ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, KEYCODE_MAPPINGS[i]);
+						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
+						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 						m_context.sendBroadcast(keypressBroadcast);
 						curStates[i] = _buttonStates[i];
 					}
@@ -167,8 +167,8 @@ public class ZeemoteReader extends RfcommReader {
 	
 					for(int i = 0; i < Math.min(directions.length, m_directions.length); i++)
 						if (m_directions[i] != directions[i]) {
-							directionBroadcast.putExtra(P1Service.EVENT_DIRECTIONALCHANGE_DIRECTION, i);
-							directionBroadcast.putExtra(P1Service.EVENT_DIRECTIONALCHANGE_VALUE, directions[i]);
+							directionBroadcast.putExtra(BluezService.EVENT_DIRECTIONALCHANGE_DIRECTION, i);
+							directionBroadcast.putExtra(BluezService.EVENT_DIRECTIONALCHANGE_VALUE, directions[i]);
 							m_context.sendBroadcast(directionBroadcast);
 							m_directions[i] = directions[i];
 							
@@ -183,9 +183,9 @@ public class ZeemoteReader extends RfcommReader {
 					for(int i = 0; i < ANALOG_KEYCODES.length; i++)
 						if (newKeyStates[i] != m_lastDirectionsKeys[i])
 						{
-							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, newKeyStates[i] ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, ANALOG_KEYCODES[i]);
-							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, true);
+							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, newKeyStates[i] ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, ANALOG_KEYCODES[i]);
+							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, true);
 							m_context.sendBroadcast(keypressBroadcast);
 							m_lastDirectionsKeys[i] = newKeyStates[i];
 						}

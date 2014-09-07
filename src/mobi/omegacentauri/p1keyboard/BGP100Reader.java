@@ -173,10 +173,10 @@ public class BGP100Reader extends RfcommReader {
 						}
 						
 						
-						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, e.getAction());
-						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, e.getKeyCode());
-						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
-						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, e.getAction());
+						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, e.getKeyCode());
+						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
+						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 						m_context.sendBroadcast(keypressBroadcast);
 
 					} else {

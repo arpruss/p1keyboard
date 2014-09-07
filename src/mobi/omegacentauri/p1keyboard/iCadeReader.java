@@ -89,10 +89,10 @@ public class iCadeReader extends HIDReaderBase {
 						if (keycode != null) {
 							if (D) Log.d(LOG_NAME, "Sending Android keyevent for key " + keycode.getKeyCode() + " " + (keycode.getAction() == KeyEvent.ACTION_DOWN ? "Down" : "Up"));
 							
-							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, keycode.getAction());
-							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, keycode.getKeyCode());
-							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
-							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, keycode.getAction());
+							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, keycode.getKeyCode());
+							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
+							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 							m_context.sendBroadcast(keypressBroadcast);
 						}
 					}

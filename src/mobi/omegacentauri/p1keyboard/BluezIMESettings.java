@@ -353,8 +353,8 @@ public class BluezIMESettings extends PreferenceActivity {
     	registerReceiver(preferenceUpdateMonitor, new IntentFilter(Preferences.PREFERENCES_UPDATED));
 
     	//Get the driver config from the server
-    	registerReceiver(configRequestMonitor, new IntentFilter(P1Service.EVENT_REPORT_CONFIG));
-    	this.startService(new Intent(P1Service.REQUEST_CONFIG));
+    	registerReceiver(configRequestMonitor, new IntentFilter(BluezService.EVENT_REPORT_CONFIG));
+    	this.startService(new Intent(BluezService.REQUEST_CONFIG));
     	
     	m_selectIME.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
@@ -577,8 +577,8 @@ public class BluezIMESettings extends PreferenceActivity {
 			public void onReceive(Context context, Intent intent) {
 				if (DRIVER_NAMES == null) {
 					
-					DRIVER_NAMES = intent.getStringArrayExtra(P1Service.EVENT_REPORT_CONFIG_DRIVER_NAMES);
-					DRIVER_DISPLAYNAMES = intent.getStringArrayExtra(P1Service.EVENT_REPORT_CONFIG_DRIVER_DISPLAYNAMES);
+					DRIVER_NAMES = intent.getStringArrayExtra(BluezService.EVENT_REPORT_CONFIG_DRIVER_NAMES);
+					DRIVER_DISPLAYNAMES = intent.getStringArrayExtra(BluezService.EVENT_REPORT_CONFIG_DRIVER_DISPLAYNAMES);
 					
 			    	CharSequence[] entries = new CharSequence[DRIVER_NAMES.length];
 			    	CharSequence[] entryValues = new CharSequence[entries.length];

@@ -29,7 +29,7 @@
 <string name="invalid_driver" formatted="false">The supplied driver is invalid: %s</string>
 
 <string-array name="driver_displaynames">
-  <item>Zeemote JS1</item>
+  <item>PalmOne Wireless Keyboard</item>
 </string-array>
 <string name="devicelist_scanfordevices">Scan for devices</string>
 <string name="devicelist_scanningfordevices">Scanning for devices ...</string>

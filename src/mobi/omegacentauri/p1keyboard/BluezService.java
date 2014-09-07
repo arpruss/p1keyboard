@@ -32,27 +32,27 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-public class P1Service extends IntentService {
+public class BluezService extends IntentService {
 	
 	
 	private static final String[] BASE_DRIVER_NAMES = {
+		PalmOneWirelessKeyboardReader.DRIVER_NAME,
 		ZeemoteReader.DRIVER_NAME, 
 		BGP100Reader.DRIVER_NAME, 
 		PhonejoyReader.DRIVER_NAME,
 		iControlPadReader.DRIVER_NAME,
 		GameStopReader.DRIVER_NAME,
 		DataDumpReader.DRIVER_NAME,
-		PalmOneWirelessKeyboardReader.DRIVER_NAME
 	};
 	
 	private static final String[] BASE_DRIVER_DISPLAYNAMES = {
+		PalmOneWirelessKeyboardReader.DISPLAY_NAME,
 		ZeemoteReader.DISPLAY_NAME, 
 		BGP100Reader.DISPLAY_NAME, 
 		PhonejoyReader.DISPLAY_NAME,
 		iControlPadReader.DISPLAY_NAME,
 		GameStopReader.DISPLAY_NAME,
 		DataDumpReader.DISPLAY_NAME,
-		PalmOneWirelessKeyboardReader.DISPLAY_NAME
 	};
 	
 	private static final String[] HID_DRIVER_NAMES = {
@@ -128,7 +128,7 @@ public class P1Service extends IntentService {
 	public static final String EVENT_REPORT_CONFIG_DRIVER_NAMES = "drivernames";
 	public static final String EVENT_REPORT_CONFIG_DRIVER_DISPLAYNAMES = "driverdisplaynames";
 	
-	private static final String LOG_NAME = "BluezIME:P1Service";
+	private static final String LOG_NAME = "BluezIME:BluezService";
 	private final Binder binder = new LocalBinder();
 	
 	//private static BluezDriverInterface m_reader = null;
@@ -137,7 +137,7 @@ public class P1Service extends IntentService {
 	private static boolean hasProbedForHID = false;
 	private static boolean supportsHID = false;
 	
-	public P1Service() {
+	public BluezService() {
 		super(LOG_NAME);
 	}
 
@@ -147,8 +147,8 @@ public class P1Service extends IntentService {
 	}
 	
 	public class LocalBinder extends Binder {
-		P1Service getService() {
-			return(P1Service.this);
+		BluezService getService() {
+			return(BluezService.this);
 		}
 	}
 

@@ -114,8 +114,8 @@ public class PhonejoyReader extends BGP100Reader {
 			
 			if (D) Log.d(getDriverName(), "Axis " + axis + " changed to " + normalized + " (" + axis_value + ")");
 			
-			directionBroadcast.putExtra(P1Service.EVENT_DIRECTIONALCHANGE_DIRECTION, axis);
-			directionBroadcast.putExtra(P1Service.EVENT_DIRECTIONALCHANGE_VALUE, normalized);
+			directionBroadcast.putExtra(BluezService.EVENT_DIRECTIONALCHANGE_DIRECTION, axis);
+			directionBroadcast.putExtra(BluezService.EVENT_DIRECTIONALCHANGE_VALUE, normalized);
 			m_context.sendBroadcast(directionBroadcast);
 			
 			boolean pressedUp = normalized < -ANALOG_THRESHOLD;
@@ -126,10 +126,10 @@ public class PhonejoyReader extends BGP100Reader {
 
 				if (D) Log.w(getDriverName(), "Sending button event, button: " + ANALOG_KEYS[(axis * 2)] + ", direction: " + (pressedUp ? "DOWN" : "UP"));				
 				
-				keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, pressedUp ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-				keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, ANALOG_KEYS[(axis * 2)]);
-				keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
-				keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, true);
+				keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, pressedUp ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+				keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, ANALOG_KEYS[(axis * 2)]);
+				keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
+				keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, true);
 				m_context.sendBroadcast(keypressBroadcast);
 			}
 			
@@ -138,10 +138,10 @@ public class PhonejoyReader extends BGP100Reader {
 
 				if (D) Log.w(getDriverName(), "Sending button event, button: " + ANALOG_KEYS[(axis * 2) + 1] + ", direction: " + (pressedDown ? "DOWN" : "UP"));				
 
-				keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, pressedDown ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-				keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, ANALOG_KEYS[(axis * 2) + 1]);
-				keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
-				keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, true);
+				keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, pressedDown ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+				keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, ANALOG_KEYS[(axis * 2) + 1]);
+				keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
+				keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, true);
 				m_context.sendBroadcast(keypressBroadcast);
 			}
 			

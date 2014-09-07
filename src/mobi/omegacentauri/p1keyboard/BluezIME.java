@@ -360,6 +360,32 @@ public class BluezIME extends InputMethodService {
 					int action = intent.getIntExtra(BluezService.EVENT_KEYPRESS_ACTION, KeyEvent.ACTION_DOWN);
 					int key = intent.getIntExtra(BluezService.EVENT_KEYPRESS_KEY, 0);
 					int metakey = intent.getIntExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
+					int special = intent.getIntExtra(BluezService.EVENT_KEYPRESS_SPECIAL, 0);
+					
+					if (special > 0) {
+						switch(special) {
+						case BluezService.SPECIAL_COPY:
+							ic.performContextMenuAction(android.R.id.copy);
+							break;
+						case BluezService.SPECIAL_CUT:
+							ic.performContextMenuAction(android.R.id.cut);
+							break;
+						case BluezService.SPECIAL_PASTE:
+							ic.performContextMenuAction(android.R.id.paste);
+							break;
+						case BluezService.SPECIAL_SELECT_ALL:
+							ic.performContextMenuAction(android.R.id.selectAll);
+							break;
+						case BluezService.SPECIAL_HOME:
+							Intent i = new Intent(Intent.ACTION_MAIN);
+							i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							i.addCategory(Intent.CATEGORY_HOME);
+							startActivity(i);
+							break;
+						}
+						
+						return;
+					}
 
 					//This construct ensures that we can perform lock free
 					// access to m_keyMappingCache and never risk sending -1 
@@ -386,7 +412,7 @@ public class BluezIME extends InputMethodService {
 								m_metaKeyMappingCache[controllerNo][key] = metakey;
 							}
 						}
-						
+
 						if (D) Log.d(LOG_NAME, "Sending key event: " + (action == KeyEvent.ACTION_DOWN ? "Down" : "Up") + " - " + key + " - " + metakey);
 						ic.sendKeyEvent(new KeyEvent(eventTime, eventTime, action, translatedKey, 0, metakey, 0, 0, KeyEvent.FLAG_SOFT_KEYBOARD));
 					}

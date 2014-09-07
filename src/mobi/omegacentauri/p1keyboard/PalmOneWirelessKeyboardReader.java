@@ -198,6 +198,8 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 		}
 
 
+		read -= 6;
+
 		// normally data[3] = data[2] ^ 0xFF and data[4] = data[2] ^ 0x67.
 		// Thus each keycode is effectively transmitted three times.  Use
 		// majority to recover it in case of corruption.
@@ -214,9 +216,9 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 			key = k2;
 		else {
 			Log.v(LOG_NAME, "Corrupted packet "+getHexString(data, 0, read));
-			return read - 6; // unrecoverably corrupt packet
+			return read; // unrecoverably corrupt packet
 		}
-
+		
 		int action;
 		boolean repeat;
 
@@ -232,22 +234,69 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 			down[key] = true;
 		}
 
-		boolean shiftDown = down[0x12] || down[0x59];
-
 		int modifiers = 0;
+		
+		if (down[0x14] && action == KeyEvent.ACTION_DOWN) {
+			int special = 0;
 
+			switch(keys[key]) {
+			case KeyEvent.KEYCODE_C:
+				special = BluezService.SPECIAL_COPY;
+				break;
+			case KeyEvent.KEYCODE_V:
+				special = BluezService.SPECIAL_PASTE;
+				break;
+			case KeyEvent.KEYCODE_X:
+				special = BluezService.SPECIAL_PASTE;
+				break;
+			case KeyEvent.KEYCODE_A:
+				special = BluezService.SPECIAL_SELECT_ALL;
+				break;
+			}
+			
+			if (special > 0) {
+				if (!repeat)
+					send(action, keys[key], modifiers, special);
+				return read;
+			}
+		}
+		
+		if (down[0x02] && action == KeyEvent.ACTION_DOWN) {
+			// FN key
+			switch(keys[key]) {
+			case KeyEvent.KEYCODE_3:
+				send(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SEARCH, 0, 0);
+				send(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SEARCH, 0, 0);
+				return read;
+			case KeyEvent.KEYCODE_2:
+				send(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MENU, 0, 0);
+				send(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MENU, 0, 0);
+				return read;
+			case KeyEvent.KEYCODE_1:
+				send(action, keys[key], modifiers, BluezService.SPECIAL_HOME);
+				return read;
+			}
+		}
+		
+		if (keys[key] == KeyEvent.KEYCODE_HOME){
+			if (action == KeyEvent.ACTION_DOWN)
+				send(action, keys[key], modifiers, BluezService.SPECIAL_HOME);
+			return read;
+		}
+		
 		if (keys[key] >= 0) {
-			send(action, keys[key], modifiers);
+			send(action, keys[key], modifiers, 0);
 		}
 
-		return read-6;
+		return read;
 	}
 
-	private void send(int action, int keyCode, int modifiers) {
+	private void send(int action, int keyCode, int modifiers, int special) {
 		keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, action);
 		keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, keyCode);
 		keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, modifiers);
 		keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+		keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_SPECIAL, special);
 		m_context.sendBroadcast(keypressBroadcast);
 	}
 

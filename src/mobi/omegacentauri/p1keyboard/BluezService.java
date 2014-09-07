@@ -77,6 +77,7 @@ public class BluezService extends IntentService {
 	public static final String EVENT_KEYPRESS_ACTION = "action";
 	public static final String EVENT_KEYPRESS_MODIFIERS = "modifiers";
 	public static final String EVENT_KEYPRESS_ANALOG_EMULATED = "emulated";
+	public static final String EVENT_KEYPRESS_SPECIAL = "special_key";
 
 	public static final String EVENT_DIRECTIONALCHANGE = "mobi.omegacentauri.p1keyboard.directionalchange";
 	public static final String EVENT_DIRECTIONALCHANGE_DIRECTION = "direction";
@@ -129,6 +130,14 @@ public class BluezService extends IntentService {
 	public static final String EVENT_REPORT_CONFIG_DRIVER_DISPLAYNAMES = "driverdisplaynames";
 	
 	private static final String LOG_NAME = "BluezIME:BluezService";
+	
+	public static final int SPECIAL_COPY = 1;
+	public static final int SPECIAL_CUT = 2;
+	public static final int SPECIAL_PASTE = 3;
+	public static final int SPECIAL_SELECT_ALL = 4;
+
+	public static final int SPECIAL_HOME = 5;
+
 	private final Binder binder = new LocalBinder();
 	
 	//private static BluezDriverInterface m_reader = null;

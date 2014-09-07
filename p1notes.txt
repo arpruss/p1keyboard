@@ -1,0 +1,80 @@
+block: ff c0 XX XX^FF XX^67 c1
+
+XX values:
+
+Press mask: 00
+release mask: 80
+
+` 0e
+1 16
+2 1e
+3 26
+4 25
+5 2e
+6 36
+7 3d
+8 3e
+9 46
+0 45
+- 4e
+= 55
+bs 66
+
+tab 0d
+q 15
+w 1d
+e 24
+r 2d
+t 2c
+y 35
+u 3c
+i 43
+o 44
+p 4d
+[ 54
+] 5b
+\ 5d
+
+cap 58
+a 1c
+s 1b
+d 23
+f 2b
+g 34
+h 33
+j 3b
+k 42
+l 4b
+; 4c
+' 52
+CR 5a
+
+LSH 12
+z 1a
+x 22
+c 21
+v 2a
+b 32
+n 31
+m 3a
+, 48
+. 49
+UP 28
+RSH 59
+/ 4a
+CTRL 14
+FN 02
+WIN 03
+HOME 11
+SPACE 29
+ALTGR 30
+LEFT 5e
+DOWN 60
+RIGHT 2F
+DEL 1F
+
+
+
+
+
+

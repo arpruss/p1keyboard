@@ -30,7 +30,7 @@ public class Preferences {
 	public static final String[] PROFILE_NAMES = new String[] {"<default>", "Profile 2", "Profile 3", "Profile 4", "Profile 5", "Profile 6", "Profile 7", "Profile 8", "Profile 9", "Profile 10" };
 	public static final String[] PROFILE_KEYS = new String[] {"", "Profile2", "Profile3", "Profile4", "Profile5", "Profile6", "Profile7", "Profile8", "Profile9", "Profile10" };
 	
-	public static final String PREFERENCES_UPDATED = "com.hexad.bluezime.preferenceschanged";
+	public static final String PREFERENCES_UPDATED = "mobi.omegacentauri.p1keyboard.preferenceschanged";
 
 	public static final int NO_WAKE_LOCK = 0;
 	
@@ -62,7 +62,7 @@ public class Preferences {
 	}
 	
 	public String getSelectedDriverName(int pos) {
-		return m_prefs.getString(PREF_DRIVER_NAME + getSuffix(pos), BluezService.getDefaultDriverName());
+		return m_prefs.getString(PREF_DRIVER_NAME + getSuffix(pos), P1Service.getDefaultDriverName());
 	}
 	
 	public void setSelectedDriverName(String value, int pos) {

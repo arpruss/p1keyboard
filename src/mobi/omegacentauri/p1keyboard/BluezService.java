@@ -32,7 +32,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-public class BluezService extends IntentService {
+public class P1Service extends IntentService {
 	
 	
 	private static final String[] BASE_DRIVER_NAMES = {
@@ -69,66 +69,66 @@ public class BluezService extends IntentService {
         HIDipega.DRIVER_DISPLAYNAME
 	};
 
-	public static final String SESSION_ID = "com.hexad.bluezime.sessionid";
-	public static final String DEFAULT_SESSION_NAME = "com.hexad.bluezime.default_session";
+	public static final String SESSION_ID = "mobi.omegacentauri.p1keyboard.sessionid";
+	public static final String DEFAULT_SESSION_NAME = "mobi.omegacentauri.p1keyboard.default_session";
 	
-	public static final String EVENT_KEYPRESS = "com.hexad.bluezime.keypress";
+	public static final String EVENT_KEYPRESS = "mobi.omegacentauri.p1keyboard.keypress";
 	public static final String EVENT_KEYPRESS_KEY = "key";
 	public static final String EVENT_KEYPRESS_ACTION = "action";
 	public static final String EVENT_KEYPRESS_MODIFIERS = "modifiers";
 	public static final String EVENT_KEYPRESS_ANALOG_EMULATED = "emulated";
 
-	public static final String EVENT_DIRECTIONALCHANGE = "com.hexad.bluezime.directionalchange";
+	public static final String EVENT_DIRECTIONALCHANGE = "mobi.omegacentauri.p1keyboard.directionalchange";
 	public static final String EVENT_DIRECTIONALCHANGE_DIRECTION = "direction";
 	public static final String EVENT_DIRECTIONALCHANGE_VALUE = "value";
 
-	public static final String EVENT_ACCELEROMETERCHANGE = "com.hexad.bluezime.accelerometerchange";
+	public static final String EVENT_ACCELEROMETERCHANGE = "mobi.omegacentauri.p1keyboard.accelerometerchange";
 	public static final String EVENT_ACCELEROMETERCHANGE_AXIS = "axis";
 	public static final String EVENT_ACCELEROMETERCHANGE_VALUE = "value";
 
-	public static final String EVENT_CONNECTING = "com.hexad.bluezime.connecting";
+	public static final String EVENT_CONNECTING = "mobi.omegacentauri.p1keyboard.connecting";
 	public static final String EVENT_CONNECTING_ADDRESS = "address";
 
-	public static final String EVENT_CONNECTED = "com.hexad.bluezime.connected";
+	public static final String EVENT_CONNECTED = "mobi.omegacentauri.p1keyboard.connected";
 	public static final String EVENT_CONNECTED_ADDRESS = "address";
 
-	public static final String EVENT_DISCONNECTED = "com.hexad.bluezime.disconnected";
+	public static final String EVENT_DISCONNECTED = "mobi.omegacentauri.p1keyboard.disconnected";
 	public static final String EVENT_DISCONNECTED_ADDRESS = "address";
 
-	public static final String EVENT_ERROR = "com.hexad.bluezime.error";
+	public static final String EVENT_ERROR = "mobi.omegacentauri.p1keyboard.error";
 	public static final String EVENT_ERROR_SHORT = "message";
 	public static final String EVENT_ERROR_FULL = "stacktrace";
 
-	public static final String REQUEST_CONNECT = "com.hexad.bluezime.connect";
+	public static final String REQUEST_CONNECT = "mobi.omegacentauri.p1keyboard.connect";
 	public static final String REQUEST_CONNECT_ADDRESS = "address";
 	public static final String REQUEST_CONNECT_DRIVER = "driver";
 	public static final String REQUEST_CONNECT_USE_UI = "use-ui-setup";
 	public static final String REQUEST_CONNECT_CREATE_NOTIFICATION = "registernotification";
 		
-	public static final String REQUEST_DISCONNECT = "com.hexad.bluezime.disconnect";
+	public static final String REQUEST_DISCONNECT = "mobi.omegacentauri.p1keyboard.disconnect";
 	
-	public static final String REQUEST_STATE = "com.hexad.bluezime.getstate";
+	public static final String REQUEST_STATE = "mobi.omegacentauri.p1keyboard.getstate";
 	
-	public static final String EVENT_REPORTSTATE = "com.hexad.bluezime.currentstate";
+	public static final String EVENT_REPORTSTATE = "mobi.omegacentauri.p1keyboard.currentstate";
 	public static final String EVENT_REPORTSTATE_CONNECTED = "connected";
 	public static final String EVENT_REPORTSTATE_DEVICENAME = "devicename";
 	public static final String EVENT_REPORTSTATE_DISPLAYNAME = "displayname";
 	public static final String EVENT_REPORTSTATE_DRIVERNAME = "drivername";
 	
 	//The service caller can also activate these, but they are not used by Bluez-IME (=> Not tested!)
-	public static final String REQUEST_FEATURECHANGE = "com.hexad.bluezime.featurechange";
+	public static final String REQUEST_FEATURECHANGE = "mobi.omegacentauri.p1keyboard.featurechange";
 	public static final String REQUEST_FEATURECHANGE_RUMBLE = "rumble"; //Boolean, true=on, false=off
 	public static final String REQUEST_FEATURECHANGE_LEDID = "ledid"; //Integer, LED to use 1-4 for Wiimote
 	public static final String REQUEST_FEATURECHANGE_ACCELEROMETER = "accelerometer"; //Boolean, true=on, false=off
 
-	public static final String REQUEST_CONFIG = "com.hexad.bluezime.getconfig";
+	public static final String REQUEST_CONFIG = "mobi.omegacentauri.p1keyboard.getconfig";
 	
-	public static final String EVENT_REPORT_CONFIG = "com.hexad.bluezime.config";
+	public static final String EVENT_REPORT_CONFIG = "mobi.omegacentauri.p1keyboard.config";
 	public static final String EVENT_REPORT_CONFIG_VERSION = "version";
 	public static final String EVENT_REPORT_CONFIG_DRIVER_NAMES = "drivernames";
 	public static final String EVENT_REPORT_CONFIG_DRIVER_DISPLAYNAMES = "driverdisplaynames";
 	
-	private static final String LOG_NAME = "BluezIME:BluezService";
+	private static final String LOG_NAME = "BluezIME:P1Service";
 	private final Binder binder = new LocalBinder();
 	
 	//private static BluezDriverInterface m_reader = null;
@@ -137,7 +137,7 @@ public class BluezService extends IntentService {
 	private static boolean hasProbedForHID = false;
 	private static boolean supportsHID = false;
 	
-	public BluezService() {
+	public P1Service() {
 		super(LOG_NAME);
 	}
 
@@ -147,8 +147,8 @@ public class BluezService extends IntentService {
 	}
 	
 	public class LocalBinder extends Binder {
-		BluezService getService() {
-			return(BluezService.this);
+		P1Service getService() {
+			return(P1Service.this);
 		}
 	}
 

@@ -20,4 +20,4 @@
 <!-- The attributes in this XML file provide configuration information -->
 <!-- for the Search Manager. -->
 
-<input-method xmlns:android="http://schemas.android.com/apk/res/android" android:settingsActivity="com.hexad.bluezime.BluezIMESettings" />
+<input-method xmlns:android="http://schemas.android.com/apk/res/android" android:settingsActivity="mobi.omegacentauri.p1keyboard.BluezIMESettings" />

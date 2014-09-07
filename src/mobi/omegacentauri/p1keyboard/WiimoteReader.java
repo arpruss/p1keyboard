@@ -790,10 +790,10 @@ public class WiimoteReader extends HIDReaderBase {
 				if (keys[i] != KEYCODE_UNUSED) {
 					if (D || (D3 && keys == CLASSIC_KEYS)) Log.d(getDriverName(), "Button " + i + " changed to: " + (states[i] == 1 ? "down" : "up"));
 
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, states[i] == 1 ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, keys[i]);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, states[i] == 1 ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, keys[i]);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 					m_context.sendBroadcast(keypressBroadcast);
 				}
 			}
@@ -817,22 +817,22 @@ public class WiimoteReader extends HIDReaderBase {
 				prev[i] = newValues[i];
 				
 				if (isAccelerometer) {
-					accelerometerBroadcast.putExtra(BluezService.EVENT_ACCELEROMETERCHANGE_AXIS, i + report_axis_offset);
-					accelerometerBroadcast.putExtra(BluezService.EVENT_ACCELEROMETERCHANGE_VALUE, prev[i]);
+					accelerometerBroadcast.putExtra(P1Service.EVENT_ACCELEROMETERCHANGE_AXIS, i + report_axis_offset);
+					accelerometerBroadcast.putExtra(P1Service.EVENT_ACCELEROMETERCHANGE_VALUE, prev[i]);
 					m_context.sendBroadcast(accelerometerBroadcast);
 				} else {
-					directionBroadcast.putExtra(BluezService.EVENT_DIRECTIONALCHANGE_DIRECTION, i + report_axis_offset);
-					directionBroadcast.putExtra(BluezService.EVENT_DIRECTIONALCHANGE_VALUE, prev[i]);
+					directionBroadcast.putExtra(P1Service.EVENT_DIRECTIONALCHANGE_DIRECTION, i + report_axis_offset);
+					directionBroadcast.putExtra(P1Service.EVENT_DIRECTIONALCHANGE_VALUE, prev[i]);
 					m_context.sendBroadcast(directionBroadcast);
 				}
 				
 				if (up != buttonstates[i*2]) {
 					buttonstates[i*2] = up;
 					if (keys[i*2] != KEYCODE_UNUSED) {
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, up ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, keys[i*2]);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, true);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, up ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, keys[i*2]);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, true);
 						m_context.sendBroadcast(keypressBroadcast);
 					}
 				}
@@ -840,10 +840,10 @@ public class WiimoteReader extends HIDReaderBase {
 				if (down != buttonstates[(i*2) + 1]) {
 					buttonstates[i*2 + 1] = down;
 					if (keys[i*2 + 1] != KEYCODE_UNUSED) {
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, down ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, keys[(i*2) + 1]);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, true);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, down ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, keys[(i*2) + 1]);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, true);
 						m_context.sendBroadcast(keypressBroadcast);
 					}
 				}
@@ -939,10 +939,10 @@ public class WiimoteReader extends HIDReaderBase {
 				if (NUNCHUCK_KEYS[0] != KEYCODE_UNUSED) {
 					if (D) Log.d(getDriverName(), "Button C changed to: " + (isCPressed ? "down" : "up"));
 
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, isCPressed ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, NUNCHUCK_KEYS[0]);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, isCPressed ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, NUNCHUCK_KEYS[0]);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 					m_context.sendBroadcast(keypressBroadcast);
 				}
 			}
@@ -952,10 +952,10 @@ public class WiimoteReader extends HIDReaderBase {
 				if (NUNCHUCK_KEYS[1] != KEYCODE_UNUSED) {
 					if (D) Log.d(getDriverName(), "Button Z changed to: " + (isZPressed ? "down" : "up"));
 
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, isZPressed ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, NUNCHUCK_KEYS[1]);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, isZPressed ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, NUNCHUCK_KEYS[1]);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 					m_context.sendBroadcast(keypressBroadcast);
 				}
 			}

@@ -276,10 +276,10 @@ public class HIDKeyboard extends HIDReaderBase {
 				// and send an appropriate key event
 				for(int i = 0; i < META_KEY_MASKS.length; i++) {
 					if ((m_lastModifiers & META_KEY_MASKS[i]) != (modifiers & META_KEY_MASKS[i])) {
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, (modifiers & META_KEY_MASKS[i]) == 0 ? KeyEvent.ACTION_UP : KeyEvent.ACTION_DOWN);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, META_KEY_KEYS[i]);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, (modifiers & META_KEY_MASKS[i]) == 0 ? KeyEvent.ACTION_UP : KeyEvent.ACTION_DOWN);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, META_KEY_KEYS[i]);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 						m_context.sendBroadcast(keypressBroadcast);
 						
 					}
@@ -323,10 +323,10 @@ public class HIDKeyboard extends HIDReaderBase {
 					
 					//The key was not pressed before, send keydown event
 					if (pressed == -1) {
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, KeyEvent.ACTION_DOWN);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, keycode);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, modifiers);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, KeyEvent.ACTION_DOWN);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, keycode);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, modifiers);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 						m_context.sendBroadcast(keypressBroadcast);
 					}
 				}
@@ -334,10 +334,10 @@ public class HIDKeyboard extends HIDReaderBase {
 				for(int i = 0; i < m_lastPressedCount; i++) {
 					//If we have non-zero entries here, the key is no longer pressed
 					if (m_lastPressed[i] != 0) {
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, KeyEvent.ACTION_UP);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, m_lastPressed[i]);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, modifiers);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, KeyEvent.ACTION_UP);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, m_lastPressed[i]);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, modifiers);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 						m_context.sendBroadcast(keypressBroadcast);
 					}
 				}
@@ -368,10 +368,10 @@ public class HIDKeyboard extends HIDReaderBase {
 					if (EXT_REPORT_KEYS[i] != 0) {
 						int mask = 1 << i;
 						if ((scanvalue & mask) != (m_lastExtendedKeys & mask)) {
-							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, (scanvalue & mask) == 0 ? KeyEvent.ACTION_UP : KeyEvent.ACTION_DOWN);
-							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, EXT_REPORT_KEYS[i]);
-							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, m_lastModifiers);
-							keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, (scanvalue & mask) == 0 ? KeyEvent.ACTION_UP : KeyEvent.ACTION_DOWN);
+							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, EXT_REPORT_KEYS[i]);
+							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, m_lastModifiers);
+							keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 							m_context.sendBroadcast(keypressBroadcast);
 						}
 					}

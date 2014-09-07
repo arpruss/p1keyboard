@@ -120,10 +120,10 @@ public class GameStopReader extends RfcommReader {
 					boolean state =  (buttons & (1 << (15 - i))) != 0;
 					if (state != m_buttons[i]) {
 						m_buttons[i] = state;
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, state ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, KEYCODE_MAPPINGS[i]);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, state ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, KEYCODE_MAPPINGS[i]);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 						m_context.sendBroadcast(keypressBroadcast);
 					}
 				}
@@ -134,23 +134,23 @@ public class GameStopReader extends RfcommReader {
 					
 					if (large != m_lastDirectionsKeys[i * 2]) {
 						m_lastDirectionsKeys[i * 2] = large;
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, large ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, ANALOG_KEYCODES[i]);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, true);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, large ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, ANALOG_KEYCODES[i]);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, true);
 						m_context.sendBroadcast(keypressBroadcast);
 					}
 					
 					if (small != m_lastDirectionsKeys[(i * 2) + 1]) {
 						m_lastDirectionsKeys[(i * 2) + 1] = small;
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, small ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, ANALOG_KEYCODES[i]);
-						keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, true);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, small ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, ANALOG_KEYCODES[i]);
+						keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, true);
 						m_context.sendBroadcast(keypressBroadcast);
 					}
 					
 					if (_directionValues[i] != m_directions[i]) {
-						directionBroadcast.putExtra(BluezService.EVENT_DIRECTIONALCHANGE_DIRECTION, i);
-						directionBroadcast.putExtra(BluezService.EVENT_DIRECTIONALCHANGE_VALUE, _directionValues[i]);
+						directionBroadcast.putExtra(P1Service.EVENT_DIRECTIONALCHANGE_DIRECTION, i);
+						directionBroadcast.putExtra(P1Service.EVENT_DIRECTIONALCHANGE_VALUE, _directionValues[i]);
 						m_context.sendBroadcast(directionBroadcast);
 						m_directions[i] = _directionValues[i];
 					}

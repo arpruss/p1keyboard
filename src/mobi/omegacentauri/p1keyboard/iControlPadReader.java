@@ -128,25 +128,25 @@ public class iControlPadReader extends RfcommReader {
 				boolean down = newvalue <= -ANALOG_NUB_THRESHOLD;
 				
 				m_axes[i] = newvalue;
-				directionBroadcast.putExtra(BluezService.EVENT_DIRECTIONALCHANGE_DIRECTION, i);
-				directionBroadcast.putExtra(BluezService.EVENT_DIRECTIONALCHANGE_VALUE, m_axes[i]);
+				directionBroadcast.putExtra(P1Service.EVENT_DIRECTIONALCHANGE_DIRECTION, i);
+				directionBroadcast.putExtra(P1Service.EVENT_DIRECTIONALCHANGE_VALUE, m_axes[i]);
 				m_context.sendBroadcast(directionBroadcast);
 				
 				if (up != m_emulatedButtons[i*2]) {
 					m_emulatedButtons[i*2] = up;
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, up ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, ANALOG_KEYS[i*2]);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, true);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, up ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, ANALOG_KEYS[i*2]);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, true);
 					m_context.sendBroadcast(keypressBroadcast);
 				}
 				
 				if (down != m_emulatedButtons[(i*2) + 1]) {
 					m_emulatedButtons[i*2 + 1] = down;
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, down ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, ANALOG_KEYS[(i*2) + 1]);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, true);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, down ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, ANALOG_KEYS[(i*2) + 1]);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, true);
 					m_context.sendBroadcast(keypressBroadcast);
 				}
 			}
@@ -162,10 +162,10 @@ public class iControlPadReader extends RfcommReader {
 				if (D) Log.d(getDriverName(), "Button " + i + " changed to: " + (m_buttons[i] == 1 ? "down" : "up"));
 				
 				if (KEYS[i] != KEYCODE_UNUSED) {
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, m_buttons[i] == 1 ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, KEYS[i]);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, 0);
-					keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, m_buttons[i] == 1 ? KeyEvent.ACTION_DOWN : KeyEvent.ACTION_UP);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, KEYS[i]);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, 0);
+					keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 					m_context.sendBroadcast(keypressBroadcast);
 				}
 			}

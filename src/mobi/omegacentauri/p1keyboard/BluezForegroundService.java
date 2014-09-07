@@ -14,8 +14,8 @@ public class BluezForegroundService extends Service {
 
 	private static final String LOG_NAME = "BluezIME:FG";
 	
-	static final String ACTION_START = "com.hexad.bluezime.START_FG_SERVICE";
-	static final String ACTION_STOP = "com.hexad.bluezime.STOP_FG_SERVICE";
+	static final String ACTION_START = "mobi.omegacentauri.p1keyboard.START_FG_SERVICE";
+	static final String ACTION_STOP = "mobi.omegacentauri.p1keyboard.STOP_FG_SERVICE";
 	private static final int NOTIFICATION_ID = 10; 
 	private NotificationManager m_notificationManager;
 	private int m_connectionCount = 0;

@@ -43,12 +43,12 @@ public abstract class RfcommReader implements BluezDriverInterface {
 	protected String m_sessionId = null;
 	private Intent m_foregroundServiceIntent = null;
 
-	protected Intent errorBroadcast = new Intent(BluezService.EVENT_ERROR);
-	protected Intent connectedBroadcast = new Intent(BluezService.EVENT_CONNECTED);
-	protected Intent disconnectedBroadcast = new Intent(BluezService.EVENT_DISCONNECTED);
-	protected Intent keypressBroadcast = new Intent(BluezService.EVENT_KEYPRESS);
-	protected Intent directionBroadcast = new Intent(BluezService.EVENT_DIRECTIONALCHANGE);
-	protected Intent accelerometerBroadcast = new Intent(BluezService.EVENT_ACCELEROMETERCHANGE);
+	protected Intent errorBroadcast = new Intent(P1Service.EVENT_ERROR);
+	protected Intent connectedBroadcast = new Intent(P1Service.EVENT_CONNECTED);
+	protected Intent disconnectedBroadcast = new Intent(P1Service.EVENT_DISCONNECTED);
+	protected Intent keypressBroadcast = new Intent(P1Service.EVENT_KEYPRESS);
+	protected Intent directionBroadcast = new Intent(P1Service.EVENT_DIRECTIONALCHANGE);
+	protected Intent accelerometerBroadcast = new Intent(P1Service.EVENT_ACCELEROMETERCHANGE);
 	
 	protected ImprovedBluetoothDevice m_device;
 	
@@ -72,12 +72,12 @@ public abstract class RfcommReader implements BluezDriverInterface {
 			m_address = address;
 			m_sessionId = sessionId;
 			
-			errorBroadcast.putExtra(BluezService.SESSION_ID, m_sessionId);
-			connectedBroadcast.putExtra(BluezService.SESSION_ID, m_sessionId);
-			disconnectedBroadcast.putExtra(BluezService.SESSION_ID, m_sessionId);
-			keypressBroadcast.putExtra(BluezService.SESSION_ID, m_sessionId);
-			directionBroadcast.putExtra(BluezService.SESSION_ID, m_sessionId);
-			accelerometerBroadcast.putExtra(BluezService.SESSION_ID, m_sessionId);
+			errorBroadcast.putExtra(P1Service.SESSION_ID, m_sessionId);
+			connectedBroadcast.putExtra(P1Service.SESSION_ID, m_sessionId);
+			disconnectedBroadcast.putExtra(P1Service.SESSION_ID, m_sessionId);
+			keypressBroadcast.putExtra(P1Service.SESSION_ID, m_sessionId);
+			directionBroadcast.putExtra(P1Service.SESSION_ID, m_sessionId);
+			accelerometerBroadcast.putExtra(P1Service.SESSION_ID, m_sessionId);
 			
 			BluetoothAdapter blue = BluetoothAdapter.getDefaultAdapter();
 			if (blue == null)
@@ -138,7 +138,7 @@ public abstract class RfcommReader implements BluezDriverInterface {
 	
 	    	validateWelcomeMessage(header, read);
 	    	
-			connectedBroadcast.putExtra(BluezService.EVENT_CONNECTED_ADDRESS, m_address);
+			connectedBroadcast.putExtra(P1Service.EVENT_CONNECTED_ADDRESS, m_address);
 			m_context.sendBroadcast(connectedBroadcast);
 		}
 		catch (Exception ex)
@@ -202,7 +202,7 @@ public abstract class RfcommReader implements BluezDriverInterface {
 	public void stop() {
 		Log.v(LOG_NAME, "stop()");
 		if (m_socket != null) {
-			disconnectedBroadcast.putExtra(BluezService.EVENT_DISCONNECTED_ADDRESS, getDeviceAddress());
+			disconnectedBroadcast.putExtra(P1Service.EVENT_DISCONNECTED_ADDRESS, getDeviceAddress());
 			m_context.sendBroadcast(disconnectedBroadcast);
 
 			try { m_socket.close(); }
@@ -283,8 +283,8 @@ public abstract class RfcommReader implements BluezDriverInterface {
 	protected void notifyError(Exception ex) {
 		Log.e(LOG_NAME + getDriverName(), ex.toString());
 
-		errorBroadcast.putExtra(BluezService.EVENT_ERROR_SHORT, ex.getMessage());
-		errorBroadcast.putExtra(BluezService.EVENT_ERROR_FULL, ex.toString());
+		errorBroadcast.putExtra(P1Service.EVENT_ERROR_SHORT, ex.getMessage());
+		errorBroadcast.putExtra(P1Service.EVENT_ERROR_FULL, ex.toString());
 		m_context.sendBroadcast(errorBroadcast);
 		
 		stop();

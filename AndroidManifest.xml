@@ -11,25 +11,25 @@
 
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">
 
-   	<service android:name="BluezService" android:exported="true" android:enabled="true" >
+   	<service android:name="P1Service" android:exported="true" android:enabled="true" >
    		<intent-filter>
-   			<action android:name="com.hexad.bluezime.disconnect" />
+   			<action android:name="mobi.omegacentauri.p1keyboard.disconnect" />
    		</intent-filter>
    		<intent-filter>
-   			<action android:name="com.hexad.bluezime.connect" />
+   			<action android:name="mobi.omegacentauri.p1keyboard.connect" />
    		</intent-filter>
    		<intent-filter>
-   			<action android:name="com.hexad.bluezime.featurechange" />
+   			<action android:name="mobi.omegacentauri.p1keyboard.featurechange" />
    		</intent-filter>
    		<intent-filter>
-   			<action android:name="com.hexad.bluezime.getconfig" />
+   			<action android:name="mobi.omegacentauri.p1keyboard.getconfig" />
    		</intent-filter>
    	</service>
    	
    	<service android:name="BluezForegroundService" android:exported="false" android:enabled="true" />
 
     <service android:name="BluezIME"
-        android:label="Bluez IME"
+        android:label="P1 Keyboard"
         android:permission="android.permission.BIND_INPUT_METHOD">
         <intent-filter>
             <action android:name="android.view.InputMethod" />

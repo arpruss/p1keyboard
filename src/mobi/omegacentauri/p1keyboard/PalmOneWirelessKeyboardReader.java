@@ -244,10 +244,10 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 	}
 
 	private void send(int action, int keyCode, int modifiers) {
-		keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ACTION, action);
-		keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_KEY, keyCode);
-		keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_MODIFIERS, modifiers);
-		keypressBroadcast.putExtra(BluezService.EVENT_KEYPRESS_ANALOG_EMULATED, false);
+		keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ACTION, action);
+		keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_KEY, keyCode);
+		keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_MODIFIERS, modifiers);
+		keypressBroadcast.putExtra(P1Service.EVENT_KEYPRESS_ANALOG_EMULATED, false);
 		m_context.sendBroadcast(keypressBroadcast);
 	}
 

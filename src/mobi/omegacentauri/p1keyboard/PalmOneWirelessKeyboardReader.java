@@ -275,6 +275,22 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 			case KeyEvent.KEYCODE_1:
 				send(action, keys[key], modifiers, BluezService.SPECIAL_HOME);
 				return read;
+			case KeyEvent.KEYCODE_DPAD_UP:
+				send(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_PAGE_UP, 0, 0);
+				send(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_PAGE_UP, 0, 0);
+				return read;
+			case KeyEvent.KEYCODE_DPAD_DOWN:
+				send(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_PAGE_DOWN, 0, 0);
+				send(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_PAGE_DOWN, 0, 0);
+				return read;
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				send(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MOVE_HOME, 0, 0);
+				send(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MOVE_HOME, 0, 0);
+				return read;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				send(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MOVE_END, 0, 0);
+				send(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MOVE_END, 0, 0);
+				return read;
 			}
 		}
 		

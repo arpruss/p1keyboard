@@ -33,6 +33,7 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 
 	public int keys[] = new int[0x80];
 	public boolean[] down = new boolean[0x80];
+	public boolean capslock;
 
 	public PalmOneWirelessKeyboardReader(String address, String sessionId, Context context, boolean startnotification) throws Exception {
 		super(address, sessionId, context, startnotification);
@@ -100,7 +101,7 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 		keys[0x4d] = KeyEvent.KEYCODE_P;
 
 		keys[0x1c] = KeyEvent.KEYCODE_A;
-		keys[0x1b] = KeyEvent.KEYCODE_S;
+		keys[0x1b] = KeyEvent.KEYCODE_S; 
 		keys[0x23] = KeyEvent.KEYCODE_D;
 		keys[0x2b] = KeyEvent.KEYCODE_F;
 		keys[0x34] = KeyEvent.KEYCODE_G;
@@ -233,6 +234,9 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 			repeat = down[key];
 			down[key] = true;
 		}
+		
+		if (action == KeyEvent.ACTION_DOWN && key == 0x58)
+			capslock = !capslock;
 
 		int modifiers = 0;
 		
@@ -301,6 +305,20 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 		}
 		
 		if (keys[key] >= 0) {
+			if (! (capslock && (down[0x12] || down[0x59]) && KeyEvent.KEYCODE_A <= keys[key] &&
+					keys[key] <= KeyEvent.KEYCODE_Z )) {
+				if (down[0x12])
+					modifiers |= KeyEvent.META_SHIFT_LEFT_ON;
+				if (down[0x59])
+					modifiers |= KeyEvent.META_SHIFT_RIGHT_ON;
+				if (capslock && (! down[0x12] && ! down[0x59]) )
+					modifiers |= KeyEvent.META_CAPS_LOCK_ON;
+			}
+			if (down[0x14])
+				modifiers |= KeyEvent.META_CTRL_LEFT_ON;
+			
+			Log.v("P1", ""+modifiers);
+
 			send(action, keys[key], modifiers, 0);
 		}
 

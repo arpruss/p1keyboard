@@ -138,6 +138,8 @@ public class BluezService extends IntentService {
 
 	public static final int SPECIAL_HOME = 5;
 
+	public static final int SPECIAL_UNICODE = 6;
+
 	private final Binder binder = new LocalBinder();
 	
 	//private static BluezDriverInterface m_reader = null;

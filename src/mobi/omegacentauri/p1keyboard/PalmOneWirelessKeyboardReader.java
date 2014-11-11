@@ -34,7 +34,36 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 	public int keys[] = new int[0x80];
 	public boolean[] down = new boolean[0x80];
 	public boolean capslock;
+	public int[][] combining;
+	
+	int[][] acute = {
+		{KeyEvent.KEYCODE_A, 0xC1},
+		{KeyEvent.KEYCODE_C, 0x107},
+		{KeyEvent.KEYCODE_E, 0xE9},
+		{KeyEvent.KEYCODE_I, 0xED},
+		{KeyEvent.KEYCODE_N, 0x144},
+		{KeyEvent.KEYCODE_O, 0xF3},
+		{KeyEvent.KEYCODE_S, 0x15B},
+		{KeyEvent.KEYCODE_U, 0xFA},
+		{KeyEvent.KEYCODE_Y, 0xFD},
+		{KeyEvent.KEYCODE_Z, 0x17A}
+	};
 
+	int[][] dot = {
+			{KeyEvent.KEYCODE_Z, 0x17C}
+		};
+	
+	int[][] minus = {
+			{KeyEvent.KEYCODE_L, 0x142},
+			{KeyEvent.KEYCODE_H, 0x127}
+	};
+	
+	int[][] cedilla = {
+			{KeyEvent.KEYCODE_A, 0x105},
+			{KeyEvent.KEYCODE_C, 0xE7},
+			{KeyEvent.KEYCODE_E, 0x119}
+	};
+	
 	public PalmOneWirelessKeyboardReader(String address, String sessionId, Context context, boolean startnotification) throws Exception {
 		super(address, sessionId, context, startnotification);
 
@@ -219,7 +248,7 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 			Log.v(LOG_NAME, "Corrupted packet "+getHexString(data, 0, read));
 			return read; // unrecoverably corrupt packet
 		}
-		
+
 		int action;
 		boolean repeat;
 
@@ -234,12 +263,12 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 			repeat = down[key];
 			down[key] = true;
 		}
-		
+
 		if (action == KeyEvent.ACTION_DOWN && key == 0x58)
 			capslock = !capslock;
 
 		int modifiers = 0;
-		
+
 		if (down[0x14] && action == KeyEvent.ACTION_DOWN) {
 			int special = 0;
 
@@ -257,13 +286,18 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 				special = BluezService.SPECIAL_SELECT_ALL;
 				break;
 			}
-			
+
 			if (special > 0) {
 				if (!repeat)
 					send(action, keys[key], modifiers, special);
 				return read;
 			}
 		}
+
+		boolean shifted = down[0x12] || down[0x59];
+		boolean capitalize = (capslock && ! shifted) || (!capslock && shifted);
+		boolean alphabetic = KeyEvent.KEYCODE_A <= keys[key] && keys[key] <= KeyEvent.KEYCODE_Z;
+		boolean shift = (key == 0x12) || (key == 0x59);
 		
 		if (down[0x02] && action == KeyEvent.ACTION_DOWN) {
 			// FN key
@@ -295,34 +329,100 @@ public class PalmOneWirelessKeyboardReader extends RfcommReader {
 				send(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MOVE_END, 0, 0);
 				send(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MOVE_END, 0, 0);
 				return read;
+			case KeyEvent.KEYCODE_Y: // yen
+				send(KeyEvent.ACTION_DOWN, 165, 0, BluezService.SPECIAL_UNICODE);
+				return read;
+			case KeyEvent.KEYCODE_P: // pound
+				send(KeyEvent.ACTION_DOWN, 0xA3, 0, BluezService.SPECIAL_UNICODE);
+				return read;
+			case KeyEvent.KEYCODE_Z: // mu
+				send(KeyEvent.ACTION_DOWN, 0x3BC, 0, BluezService.SPECIAL_UNICODE);
+				return read;
+			case KeyEvent.KEYCODE_X: // c-cedilla
+				send(KeyEvent.ACTION_DOWN, capitalize ? 0xC7 : 0xE7, 0, BluezService.SPECIAL_UNICODE);
+				return read;
+			case KeyEvent.KEYCODE_C: // sharp s
+				if (capitalize) {
+					send(KeyEvent.ACTION_DOWN, (int)'S', 0, BluezService.SPECIAL_UNICODE);
+					send(KeyEvent.ACTION_DOWN, (int)'S', 0, BluezService.SPECIAL_UNICODE);
+				}
+				else {
+					send(KeyEvent.ACTION_DOWN, 0xDF, 0, BluezService.SPECIAL_UNICODE);
+				}
+				return read;
+
+			case KeyEvent.KEYCODE_V: // inverted !
+				send(KeyEvent.ACTION_DOWN, 0xA1, 0, BluezService.SPECIAL_UNICODE);
+				return read;
+
+			case KeyEvent.KEYCODE_B: // n~
+				send(KeyEvent.ACTION_DOWN, capitalize ? 0xD1 : 0xF1, 0, BluezService.SPECIAL_UNICODE);
+				return read;
+
+			case KeyEvent.KEYCODE_N: // N~
+				send(KeyEvent.ACTION_DOWN, 0xD1, 0, BluezService.SPECIAL_UNICODE);
+				return read;
+
+			case KeyEvent.KEYCODE_M: // inverted ?
+				send(KeyEvent.ACTION_DOWN, 0xBF, 0, BluezService.SPECIAL_UNICODE);
+				return read;
+				
+			case KeyEvent.KEYCODE_D: 
+				combining = acute;
+				return read;
+				
+			case KeyEvent.KEYCODE_PERIOD:
+				combining = dot;
+				return read;
+				
+			case KeyEvent.KEYCODE_MINUS:
+				combining = minus;
+				return read;
+				
+			case KeyEvent.KEYCODE_COMMA:
+				combining = cedilla;
+				return read;
 			}
 		}
-		
+
 		if (keys[key] == KeyEvent.KEYCODE_HOME){
 			if (action == KeyEvent.ACTION_DOWN)
 				send(action, keys[key], modifiers, BluezService.SPECIAL_HOME);
 			return read;
-		}
+		} 
 		
-		if (keys[key] >= 0) {
-			if (! (capslock && (down[0x12] || down[0x59]) && KeyEvent.KEYCODE_A <= keys[key] &&
-					keys[key] <= KeyEvent.KEYCODE_Z )) {
-				if (down[0x12])
-					modifiers |= KeyEvent.META_SHIFT_LEFT_ON;
-				if (down[0x59])
-					modifiers |= KeyEvent.META_SHIFT_RIGHT_ON;
-				if (capslock && (! down[0x12] && ! down[0x59]) )
-					modifiers |= KeyEvent.META_CAPS_LOCK_ON;
-			}
-			if (down[0x14])
-				modifiers |= KeyEvent.META_CTRL_LEFT_ON;
-			
-			Log.v("P1", ""+modifiers);
-
-			send(action, keys[key], modifiers, 0);
+		if (action == KeyEvent.ACTION_DOWN && ! alphabetic && ! shift) 
+			combining = null;
+		
+		if (action == KeyEvent.ACTION_DOWN && alphabetic && combining != null) {
+			combine(keys[key], capitalize);
 		}
+		else if (keys[key] >= 0) {
+				if (! (capslock && shifted && alphabetic ) ) {
+					if (down[0x12])
+						modifiers |= KeyEvent.META_SHIFT_LEFT_ON;
+					if (down[0x59])
+						modifiers |= KeyEvent.META_SHIFT_RIGHT_ON;
+					if (capslock && (! down[0x12] && ! down[0x59]) )
+						modifiers |= KeyEvent.META_CAPS_LOCK_ON;
+				}
+				if (down[0x14])
+					modifiers |= KeyEvent.META_CTRL_LEFT_ON;
+	
+				send(action, keys[key], modifiers, 0);
+			}
 
 		return read;
+	}
+	
+	private void combine(int key, boolean capitalize) {
+		for (int[] k : combining) {
+			if (k[0] == key) {
+				send(KeyEvent.ACTION_DOWN, capitalize ? Character.toUpperCase(k[1]) : k[1], 0, BluezService.SPECIAL_UNICODE);
+				break;
+			}
+		}
+		combining = null;
 	}
 
 	private void send(int action, int keyCode, int modifiers, int special) {

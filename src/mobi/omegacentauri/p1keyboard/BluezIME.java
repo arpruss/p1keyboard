@@ -382,6 +382,8 @@ public class BluezIME extends InputMethodService {
 							i.addCategory(Intent.CATEGORY_HOME);
 							startActivity(i);
 							break;
+						case BluezService.SPECIAL_UNICODE:
+							ic.commitText(String.valueOf(Character.toChars(key)),1 );
 						}
 						
 						return;
